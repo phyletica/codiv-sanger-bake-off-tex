@@ -1,0 +1,17 @@
+*.swp
+.DS_Store
+*.aux
+*.bbl
+*.blg
+*latexmk
+*.fls
+*.lof
+*-blx.bib
+*.nav
+*.run.xml
+*.snm
+*.toc
+*.bcf
+*.log
+*.out
+*.pdf
