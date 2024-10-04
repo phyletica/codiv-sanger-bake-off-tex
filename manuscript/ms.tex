@@ -79,20 +79,93 @@
 
 \section{Results}
 
-\subsection{Analyses of simulated data}
-
-\subsection{Empirical analyses}
+\subsection{Simulation results}
 
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{../images/from-project-repo/independent-div-time-scatter.pdf}
+        \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{../images/from-project-repo/plots/tex-plot-grids/grid-model-distance-cropped.pdf}
         \caption{
-            \Ecoevolity estimates divergence times more accurately and precisely
-            than \dppmsbayes when all five population pairs diverge independently.
+            \Ecoevolity estimates the partitioning of population pairs to
+            divergence times (the divergence model) more accurately and
+            precisely than \dppmsbayes across all simulated numbers of loci
+            (columns) and whether the divergence model was drawn from a
+            Dirichlet process (top row), or constrained so that all pairs of
+            populations diverged independently (middle row) or simultaneously
+            (bottom row).
+            Divergence model estimation error was quantified for each
+            simulation replicate using the mean partition distance
+            \citep{Regnier1983,Gusfield2002} between the true divergence model
+            and the posterior samples of divergence models.
+            Partition distances was calculated using the Hungarian (or
+            Kuhn-Munkres) algorithm
+            \citep{Kuhn1955,Munkres1957}
+            as implemented in \pycoevolity
+            \citep[Version 0.2.11 Commit 85ea44b;][]{Oaks2018ecoevolity,PycoevolityRepoOnline},
+            which relies on the Munkres Python package
+            \citep[Version 1.1.4;][]{Clapper2020}.
+            For each violin plot, the sample size (number of simulation
+            replicates) is shown beneath and the mean is represented by the
+            white dot and shown above.
+            The box shows the upper and lower quartiles and the brackets
+            show the 2.5th and 97.5th percentiles.
+            At the top center of each plot, the results of a Mann-Whitney U
+            test \citep{MannWhitney1947} are shown comparing mean model errors
+            between \ecoevolity and \dppmsbayes;
+            the probability of superiority \citep[PoS, the probability that
+            \ecoevolity has a lower mean model error than \dppmsbayes for a
+            random simulation replicate drawn from
+            each;][]{WolfeHogg1971,Grissom1994} and p-value is provided.
         }
-        \label{fig:divtimeindependent}
+        \label{fig:modelerror}
     \end{center}
 \end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{../images/from-project-repo/plots/tex-plot-grids/grid-div-time-error-cropped.pdf}
+        \caption{
+            \Ecoevolity better estimates divergence times than \dppmsbayes
+            across all simulated numbers of loci (columns) and whether the
+            divergence model was drawn from a Dirichlet process (top row), or
+            constrained so that all pairs of populations diverged independently
+            (middle row) or simultaneously (bottom row).
+            Divergence time error was quantified for each simulation replicate
+            as the sum of the difference between the true and posterior mean
+            divergence time across the five pairs of populations.
+            For each violin plot, the sample size (number of simulation
+            replicates) is shown beneath and the mean is represented by the
+            white dot and shown above.
+            The box shows the upper and lower quartiles and the brackets
+            show the 2.5th and 97.5th percentiles.
+            At the top center of each plot, the results of a Mann-Whitney U
+            test \citep{MannWhitney1947} are shown comparing mean model errors
+            between \ecoevolity and \dppmsbayes;
+            the probability of superiority \citep[PoS, the probability that
+            \ecoevolity has a lower mean model error than \dppmsbayes for a
+            random simulation replicate drawn from
+            each;][]{WolfeHogg1971,Grissom1994} and p-value is provided.
+        }
+        \label{fig:divtimeerror}
+    \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{../images/from-project-repo/plots/free-div-time-scatter-cropped.pdf}
+        \caption{
+            \Ecoevolity (top row) estimates divergence times more accurately
+            and precisely than \dppmsbayes (bottom row) across all simulated
+            numbers of loci (columns) for five pairs of populations simulated
+            to have diverged according to a Dirichlet process.
+            Each plotted circle and associated error bars represent the posterior mean
+            and 95\% credible interval.
+            \accuracyscatterplotannotations{\comparisonetime{}}
+        }
+        \label{fig:divtimeerrordp}
+    \end{center}
+\end{figure}
+
+\subsection{Empirical results}
 
 
 \section{Discussion}
@@ -103,10 +176,9 @@
 This work was supported by funding provided to JRO from the National Science
 Foundation (NSF grant number DEB 1656004).
 The computational work was made possible by the Auburn University (AU) Hopper
-Cluster supported by the AU Office of Information Technology
-and
-a grant of high-performance computing resources and technical support from the
-Alabama Supercomputer Authority.
+Cluster supported by the AU Office of Information Technology and a grant of
+high-performance computing resources and technical support from the Alabama
+Supercomputer Authority.
 This paper is contribution number \highLight{XXX} of the Auburn University
 Museum of Natural History.
 

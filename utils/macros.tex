@@ -69,3 +69,36 @@
 % \def\xHyphen@te{\@ifnextchar${\@gobble}{\sw@p{\hskip 0pt plus 1pt\xHyphen@te}}}
 \def\sw@p#1#2{#2#1}
 \makeatother
+
+\newcommand{\accuracyscatterplotannotations}[1]{For each plot, the
+    root-mean-square error (RMSE) and the proportion of estimates for which the
+    95\% credible interval contained the true value---$p(#1 \in
+    \textrm{CI})$---is given.
+}
+\newcommand{\neventsplotannotations}{For each plot,
+    the proportion of simulation replicates for which the number of events with
+    the largest posterior probability matched the true number of
+    events---$p(\hat{\nevents} = \nevents)$---is shown in the upper left
+    corner,
+    the median posterior probability of the correct number of events across all
+    simulations---$\widetilde{p(\nevents|\alldata)}$---is shown in the upper
+    right corner, and
+    the proportion of simulations for which the true divergence model was
+    included in the 95\% credible set---$p(\nevents \in
+    \textrm{CS})$---is shown in the lower right.
+}
+\newcommand{\neventsbarplotannotations}{For each plot, the following summary
+    statistics are shown:
+    the proportion of simulation replicates for which the number of events with
+    the largest posterior probability matched the true number of
+    events---$p(\hat{\nevents} = \nevents)$---,
+    the median posterior probability of the correct number of events across all
+    simulations---$\widetilde{p(\nevents|\alldata)}$---, and
+    the proportion of simulations for which the true divergence model was
+    included in the 95\% credible set---$p(\nevents \in
+    \textrm{CS})$---.
+}
+\newcommand{\neventsshadingdescription}{The number of simulation replicates
+    that fall within each possible cell of true versus estimated numbers of
+    events is shown, and cells with more replicates are shaded darker.
+}

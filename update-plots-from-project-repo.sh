@@ -112,6 +112,12 @@ write_banner_msg "Checking out commit $commit_sha  of bakeoff project repo..."
 (
     cd "$project_dir"
     git checkout -b tmp "$commit_sha"
+    git lfs pull --include "*.pdf"
+    files_to_remove=$(find results/plots -type f ! -name "*.pdf" && find results/empirical-plots -type f ! -name "*.pdf")
+    for f in $files_to_remove
+    do
+        rm "$f"
+    done
 )
 
 write_banner_msg "Copying plot directories from project repo..."
