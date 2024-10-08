@@ -73,7 +73,7 @@
 
 \section{Methods}
 
-\subsection{Analyses of simulated data}
+\subsection{Simulating data}
 
 We simulated loci for 5 diploid individuals (i.e., 10 gene
 copies) per population from 5 pairs of diverging populations.
@@ -94,7 +94,7 @@ scenarios:
     \item All five pairs of populations diverged independently.
     \item All five pairs of populations diverged simultaneously.
     \item The number of divergence times (\nevents) and the assignment of the
-        five pairs of populations to the divergene times (\divtimesets) vary
+        five pairs of populations to the divergene times (\etimesets) vary
         according to a Dirichlet-process model with a concentration parameter
         of 2.22543.
 \end{enumerate}
@@ -107,13 +107,9 @@ We constrained the mutation rate (\murate{}) to 1 across the five pairs of
 populations, such that divergence times and effective population sizes were
 scaled by the mutation rate.
 
-\subsubsection{Full-likelihood analyses}
-
-To simulate datasets and analyze them under a full-likelihood Bayesian model of
-population divergences, we used the \simcoevolity and \ecoevolity tools of the
-\ecoevolity software package
+To simulate the datasets for analysis under a full-likelihood Bayesian model,
+we used the \simcoevolity tool of the \ecoevolity software package.
 \citep[Version 0.3.2, Commit c128046;][]{Oaks2018ecoevolity,Oaks2018paic}.
-
 The mutation-scaled effective sizes of the descendant populations
 ($\epopsize\murate$) were drawn from a gamma distribution with a shape of 10
 and mean of 0.0005,
@@ -122,22 +118,7 @@ The effective size of the ancestral population relative to the mean of
 its descendants was drawn from a gamma distribution with a shape of 40 and mean of 1,
 $\rootrelativepopsize \sim \dgamma{40}{1.0}$.
 
-When analyzing each simulated \dataset with \ecoevolity, we ran four MCMC
-chains for 30,000 generations sampling every 20 generations.
-We used the last 1000 samples from each of the four chains to approximate the
-posterior distribution of the model given each simulated dataset.
-To assess convergence and mixing of the MCMC chains, we calculated the
-potential scale reduction factor \citep[PSRF; the square root of Equation 1.1
-in][]{Brooks1998} and effective sample size \citep[ESS;][]{Gong2014} for all
-continuous parameters and the log likelihood using
-\pycoevolity
-\citep[Version 0.2.11 Commit 85ea44b;][]{Oaks2018ecoevolity,PycoevolityRepoOnline}.
-% When plotting results, we highlight any simulation replicates that have a
-% $\textrm{PSRF} > 1.2$.
-
-\subsubsection{ABC analyses}
-
-To simulate datasets and analyze them under a similar model estimated via
+To simulate datasetsfor analysis with
 approximate-Bayesian computation (ABC),
 we used \pymsbayes
 \citep[Version 0.3.7, Commit 54f720df;][]{Oaks2014dpp},
@@ -147,18 +128,55 @@ MTML-msBayes \citep{Huang2011}.
 In this software, the distribution for effective population sizes is placed
 on the parameter $4\epopsize{}\murate{}$, for which we used
 a gamma distribution with a shape of 10 and a mean of 0.002.
-Note, this is equivalent to the distribution we used for $\epopsize{}\murate{}$
-in \ecoevolity.
+This is equivalent to the distribution we used for $\epopsize{}\murate{}$ with
+\ecoevolity.
+When summarizing and plotting effective population size for \pymsbayes, we
+divided all true and estimated values by four for direct comparability with
+\ecoevolity.
 
-\subsection{Empirical analyses}
+\subsection{Full-likelihood analyses of simulated data}
+
+We analyzed each dataset simulated by \simcoevolity with \ecoeovlity 
+\citep[Version 0.3.2, Commit c128046;][]{Oaks2018ecoevolity,Oaks2018paic}
+under a Dirichlet-process model with a concentration parameter of 2.22543.
+For prior distributions on divergence times and effective population sizes, we
+used the same distributions described above for the simulations.
+We ran four MCMC chains for 30,000 generations sampling every 20 generations.
+To approximate the posterior distribution of the model given each simulated
+dataset, we used the last 1000 samples from each of the four chains.
+To assess convergence and mixing of the MCMC chains, we calculated the
+potential scale reduction factor \citep[PSRF; the square root of Equation 1.1
+in][]{Brooks1998} and effective sample size \citep[ESS;][]{Gong2014} for all
+continuous parameters and the log likelihood using
+\pycoevolity
+\citep[Version 0.2.11 Commit 85ea44b;][]{Oaks2018ecoevolity,PycoevolityRepoOnline}.
+
+\subsubsection{ABC analyses of simulated data}
+
+To analyze each dataset simulated by \pymsbayes, we used the ABC rejection
+algorithm implemented in dpp-msbayes via \pymsbayes \citep[Version 0.3.7,
+Commit 54f720df;][]{Oaks2014dpp},
+under a Dirichlet-process model with a concentration parameter of 2.22543, and
+prior distributions on divergence times and effective populatoin sizes that
+match the simulation distributions described above.
+We simulated 1 million samples to approximate the joint prior distribution of
+the model.
+To approximate the posterior given each simulated dataset, we retained the 2000
+prior samples with the smallest Euclidean distance for four summary statistics
+standardized using the mean and standard deviation from the prior sample
+\citep{Oaks2014dpp}:
+$\pi$ \cite{Tajima1983}, $\theta_W$ \cite{Watterson1975}, $\pi_{net}$
+\cite{Takahata1985}, and $SD(\pi-\theta_W)$ \cite{Tajima1989}.
+
+\subsection{Analyses of biological data}
 
 \section{Results}
 
 \subsection{Simulation results}
 
-The potential scale reduction facter (PSRF) was less than X and the effective
-sample size (ESS) was greater than Y for all parameters and the log likelihood
-across all simulations
+The potential scale reduction facter (PSRF) was less than 1.01 and the
+effective sample size (ESS) was greater than 600 for all parameters and the log
+likelihood across all simulations
 (Fig.\ S\labelcref{fig:psrfdivtime,fig:psrfrootpopsize,fig:psrflnl,fig:essdivtime,fig:essrootpopsize,fig:esslnl}).
 
 \begin{figure}[htbp]
