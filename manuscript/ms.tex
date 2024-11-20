@@ -75,8 +75,8 @@
 
 \subsection{Simulating data}
 
-We simulated loci for 5 diploid individuals (i.e., 10 gene
-copies) per population from 5 pairs of diverging populations.
+We simulated loci for five diploid individuals (i.e., 10 gene
+copies) per population from five pairs of diverging populations.
 Each pair shared a common ancestral population with a constant effective size
 \epopsize[\rootpopindex]
 that diverged at time
@@ -94,9 +94,9 @@ scenarios:
     \item All five pairs of populations diverged independently.
     \item All five pairs of populations diverged simultaneously.
     \item The number of divergence times (\nevents) and the assignment of the
-        five pairs of populations to the divergene times (\etimesets) vary
+        five pairs of populations to the divergence times (\etimesets) vary
         according to a Dirichlet-process model with a concentration parameter
-        of 2.22543.
+        of 2.22543, which corresponds to a mean of 3 divergence times.
 \end{enumerate}
 For each of the 12 simulation conditions (4 numbers of loci $\times$ 3
 divergence scenarios),
@@ -118,11 +118,11 @@ The effective size of the ancestral population relative to the mean of
 its descendants was drawn from a gamma distribution with a shape of 40 and mean of 1,
 $\rootrelativepopsize \sim \dgamma{40}{1.0}$.
 
-To simulate datasetsfor analysis with
+To simulate datasets for analysis with
 approximate-Bayesian computation (ABC),
 we used \pymsbayes
 \citep[Version 0.3.7, Commit 54f720df;][]{Oaks2014dpp},
-which is a Python multiprocessing wrapper around dpp-msbayes
+which is a Python multiprocessing wrapper around \dppmsbayes
 \citep{Oaks2014dpp}, which is a modification of
 MTML-msBayes \citep{Huang2011}.
 In this software, the distribution for effective population sizes is placed
@@ -154,30 +154,70 @@ continuous parameters and the log likelihood using
 \subsubsection{ABC analyses of simulated data}
 
 To analyze each dataset simulated by \pymsbayes, we used the ABC rejection
-algorithm implemented in dpp-msbayes via \pymsbayes \citep[Version 0.3.7,
+algorithm implemented in \dppmsbayes via \pymsbayes \citep[Version 0.3.7,
 Commit 54f720df;][]{Oaks2014dpp},
 under a Dirichlet-process model with a concentration parameter of 2.22543, and
-prior distributions on divergence times and effective populatoin sizes that
+prior distributions on divergence times and effective population sizes that
 match the simulation distributions described above.
 We simulated 1 million samples to approximate the joint prior distribution of
 the model.
 To approximate the posterior given each simulated dataset, we retained the 2000
-prior samples with the smallest Euclidean distance for four summary statistics
-standardized using the mean and standard deviation from the prior sample
+prior samples with the smallest Euclidean distance for the following four
+summary statistics standardized using the mean and standard deviation from the
+prior sample
 \citep{Oaks2014dpp}:
 $\pi$ \cite{Tajima1983}, $\theta_W$ \cite{Watterson1975}, $\pi_{net}$
 \cite{Takahata1985}, and $SD(\pi-\theta_W)$ \cite{Tajima1989}.
 
-\subsection{Analyses of biological data}
+\subsection{Re-analyses of biological data}
+
+To assess the effect of a using a full-likelihood approach, we reanalyzed two
+datasets with previously published results of using the ABC approach to
+estimating shared divergence times.
+
+In their study into the factors affecting the divergence of flightless darkling
+beetles across the Aegean Archipelago,
+Papadopoulou and Knowles \citeyear{PapadopoulouKnowles2015} used \dppmsbayes to
+estimate the relative divergence times of 13 pairs of populations.
+\jrocomment{We should probably describe the dataset a bit; number of loci, etc.}
+
+To test the prediction of clustered divergences driven by Pleistocene glacial
+cycles Oaks et al.\ \citeyear{Oaks2012} used MTML-msBayes \cite{Huang2011} to
+estimate the divergence times of 22 pairs of populations from across the
+Philippine Islands.
+Oaks \citeyear{Oaks2014dpp} reanalyzed these same data using \dppmsbayes.
+\jrocomment{We should probably describe the dataset a bit; number of loci, etc.}
+
+\jrocomment{Jamie needs to add analysis details here}.
+
 
 \section{Results}
 
 \subsection{Simulation results}
 
-The potential scale reduction facter (PSRF) was less than 1.01 and the
+We found good convergence and mixing of the MCMC chains across the \ecoevolity
+analyses of the 12,000 simulated dataset.
+The potential scale reduction factor (PSRF) was less than 1.01 and the
 effective sample size (ESS) was greater than 600 for all parameters and the log
 likelihood across all simulations
-(Fig.\ S\labelcref{fig:psrfdivtime,fig:psrfrootpopsize,fig:psrflnl,fig:essdivtime,fig:essrootpopsize,fig:esslnl}).
+(\figs S\labelcref{fig:psrfdivtime,fig:psrfrootpopsize,fig:psrflnl,fig:essdivtime,fig:essrootpopsize,fig:esslnl}).
+
+Across all four numbers of loci and three divergence scenarios, \ecoevolity
+performed better at estimating the divergence model (\ie, the number of
+divergence times and the assignment of the five pairs of populations to those
+divergences) than \dppmsbayes, and the differences were significant according
+to a Mann-Whitney U test \citep[\fig~\ref{fig:modelerror};][]{MannWhitney1947}.
+The better performance of \ecoevolity is small when there is only one 500-base
+locus, but the performance difference increases as the number of loci increase.
+This is largely due to the fact that the ABC method (\dppmsbayes) does not gain
+much information from additional loci, whereas the full-likelihood method
+(\ecoevolity) does (\fig~\ref{fig:modelerror}).
+The same pattern is true when looking at estimation error of divergence times
+(\figs \ref{fig:divtimeerror}, \ref{fig:divtimescatterdp}, \& S\ref{fig:divtimescatter}),
+the number of divergence times
+(\fig S\ref{fig:nevents}),
+and the effective population sizes 
+(\figs S\labelcref{fig:ancpopsizeerror,fig:leafpopsizescatter,fig:rootpopsizescatter}).
 
 \begin{figure}[htbp]
     \begin{center}
@@ -259,11 +299,55 @@ likelihood across all simulations
             and 95\% credible interval.
             \accuracyscatterplotannotations{\comparisonetime{}}
         }
-        \label{fig:divtimeerrordp}
+        \label{fig:divtimescatterdp}
     \end{center}
 \end{figure}
 
 \subsection{Empirical results}
+
+\jrocomment{For now I am just dropping plots below.}
+
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{../images/from-project-repo/empirical-plots/mediterranean-all-pairs/pyco-sumevents-mediterranean-all-pairs-pycoevolity-nevents-cropped.pdf}
+        \caption{
+            \Ecoevolity results for all Mediterranean pairs.
+        }
+        \label{fig:neventsmediall}
+    \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{../images/from-project-repo/empirical-plots/mediterranean-soil-pairs/pyco-sumevents-mediterranean-soil-pairs-pycoevolity-nevents-cropped.pdf}
+        \caption{
+            \Ecoevolity results for soil Mediterranean pairs.
+        }
+        \label{fig:neventsmedisoil}
+    \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{../images/from-project-repo/empirical-plots/philippines-all-pairs/pyco-sumevents-philippines-all-pairs-pycoevolity-nevents-cropped.pdf}
+        \caption{
+            \Ecoevolity results for all Philippines pairs.
+        }
+        \label{fig:neventsphilall}
+    \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{../images/from-project-repo/empirical-plots/philippines-negros-panay-pairs/pyco-sumevents-philippines-negros-panay-pairs-pycoevolity-nevents-cropped.pdf}
+        \caption{
+            \Ecoevolity results for Negros-Panay pairs.
+        }
+        \label{fig:neventsphilnp}
+    \end{center}
+\end{figure}
+
+
 
 
 \section{Discussion}
