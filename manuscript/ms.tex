@@ -71,6 +71,54 @@
 
 \section{Introduction}
 
+To understand the distribution of biodiversity, the field of historical
+biogeography considers how past environmental changes have shaped diversity
+within and among species.
+Environmental processes that affect whole biological communities can cause
+speciation or extinction across multiple species at the same time.
+Biogeographers are often interested in testing for patterns of temporally
+clustered speciation events as evidence that a shared process caused multiple
+lineages to diverge.
+For example, finding that a number of evolutionary lineages diverged
+simultaneously can be difficult to explain via species-specific processes alone and
+provides compelling evidence for a shared process of diversification, like the
+fragmentation of an environment.
+
+One way to test the predictions of such processes of diversification is to
+infer the temporal pattern of divergences across multiple taxa, and determine
+whether any subsets of the taxa shared the same divergence times.
+Methods have been developed to test for such patterns of shared divergence
+times across taxa using approximate Bayesian computation (ABC)
+\citep{Hickerson2006,Huang2011,Oaks2014dpp}
+and likelihood-based Bayesian inference
+\citep{Oaks2018ecoevolity,Oaks2019codemog}.
+Both approaches use Bayesian model choice to infer the temporal pattern of
+divergences across multiple pairs of populations or species.
+
+Several of the ABC methods were primarily developed for analyzing a small
+number of unlinked genetic loci each comprising linked, nonrecombining sites.
+These methods often struggle to detect multiple divergence times across pairs of
+populations \citep{Oaks2012, Oaks2014reply} or have little information to
+update \textit{a priori} expectations \citep{Oaks2014dpp}.
+More fundamentally, the loss of information inherent to ABC approaches can
+prevent them from discriminating among models
+\citep{Robert2011,Marin2014,Green2015}.
+
+By more efficiently using information from a large number of effectively
+unlinked sites from across the genomes of sampled organisms, the
+full-likelihood Bayesian methods enable more accurate and precise estimates of
+shared divergneces
+\citep{Oaks2018ecoevolity,Oaks2019codemog}.
+
+This raises a question.
+Given a dataset of one or a small number of loci of linked sites,
+is it better to use an ABC approach that correctly models such loci, but
+but suffers from low power and bias?
+Or, is it better to use a full-likelihood approach that has more power,
+but incorrectly assumes the sites in the data are unlinked?
+\jrocomment{Need to flesh out this intro more.}
+
+
 \section{Methods}
 
 \subsection{Simulating data}
@@ -133,6 +181,12 @@ This is equivalent to the distribution we used for $\epopsize{}\murate{}$ with
 When summarizing and plotting effective population size for \pymsbayes, we
 divided all true and estimated values by four for direct comparability with
 \ecoevolity.
+
+Ideally, we would have applied both the full-likelihood and ABC methods
+to the datasets simulated using \pymsbayes.
+However, this was not possible, because \dppmsbayes does not store the full
+simulated sequence data, only the population genetic summary statistics used by
+the ABC algorithm.
 
 \subsection{Full-likelihood analyses of simulated data}
 
@@ -356,6 +410,24 @@ and the effective population sizes
 \newpage
 
 \section{Discussion}
+
+As mentioned in the methods,
+it would have been ideal to apply both the full-likelihood and ABC methods
+to the data simulated via \dppmsbayes.
+Because \dppmsbayes only stores summary statistics from the genetic data, this
+was not possible.
+However, it is unlikely that differences between the simulators implemented in
+\dppmsbayes and \ecoevolity could explain the differences in performance
+between full-likelihood and ABC inference methods.
+Both simulators have been independently validated by suites of tests in the
+\pymsbayes and \ecoevolity distributions.
+Also, the assumption that the simulators are producing nearly identically
+distributed data (barring minor differences in parameterizations between the
+implementations) is supported by our finding that both inference methods
+perform very similarly when the size of the simulated data sets are small
+(i.e., one 500-site locus) and diverge in performance as we increased the size
+of the simulated data sets (\figs \ref{fig:modelerror} \&
+\ref{fig:divtimeerror}).
 
 
 \section{Acknowledgments}
